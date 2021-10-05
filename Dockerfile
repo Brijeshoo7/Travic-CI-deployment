@@ -1,10 +1,12 @@
-FROM node:alpine as builder
-WORKDIR '/app'
-COPY ./package.json ./
-RUN npm install --force
+### STAGE 1: Build ###
+FROM node:alpine
+WORKDIR /app
+COPY package.json ./
+RUN npm install
 COPY . .
 RUN npm run build
 
-FROM nginx
+### STAGE 2: Run ###
+FROM nginx:1.17.1-alpine
 EXPOSE 80
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=0 /usr/src/app/dist /usr/share/nginx/html
