@@ -3,16 +3,16 @@ services:
   - docker
 
 before_install:
-  - docker build -t brijesh  -f Dockerfile.dev .
+  - docker build -t brijesh/Brijeshoo7  -f Dockerfile.dev .
 
 script:
-        - docker run brijesh:latest npm run test -- --coverage
+        - docker run brijesh/Brijeshoo7 npm run test -- --coverage
 
 after_success:
   #log in to docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   #take built images and push to DOcker hub
-  - docker push brijesh:latest
+  - docker push brijesh/Brijeshoo7
 
 deploy:
   provider: elasticbeanstalk
@@ -24,6 +24,5 @@ deploy:
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: "$AWS_SECRET_KEY"
+  secret_access_key:  $AWS_SECRET_KEY
 
