@@ -6,13 +6,13 @@ before_install:
   - docker build -t brijesh  Dockerfile .
 
 script:
-        - docker run brijesh npm run test -- --coverage
+        - docker run -e CI=true -p 80:3000  brijesh:latest npm run test -- --coverage
 
-after_success:
+          #after_success:
   #log in to docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   #take built images and push to DOcker hub
-  - docker push brijesh
+  #  - docker push brijesh
 
 deploy:
   provider: elasticbeanstalk
